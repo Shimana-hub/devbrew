@@ -6,15 +6,25 @@ import { WidgetContainer } from "./WidgetContainer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { v4 as uuid } from "uuid";
+import { useAuth } from "@/lib/AuthProvider";
 
 export function Bookmarks() {
-  const { bookmarks, addBookmark, removeBookmark } = useDashboardStore();
+  const { session } = useAuth();
+  const userId = session?.user.id;
+  const { bookmarks, fetchBookmarks, saveBookmark, deleteBookmark } =
+    useDashboardStore();
+
   const [label, setLabel] = useState("");
   const [url, setUrl] = useState("");
 
+  useEffect(() => {
+    if (userId) fetchBookmarks(userId);
+  }, [userId]);
+
   const handleAdd = () => {
-    if (!label || !url) return;
-    addBookmark({ id: uuid(), label, url });
+    if (!label || !url || !userId) return;
+    const newBookmark = { id: uuid(), label, url };
+    saveBookmark(newBookmark, userId);
     setLabel("");
     setUrl("");
   };
@@ -47,13 +57,7 @@ export function Bookmarks() {
               >
                 {b.label}
               </a>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => removeBookmark(b.id)}
-              >
-                ❌
-              </Button>
+              <Button onClick={() => deleteBookmark(b.id, userId)}>❌</Button>
             </li>
           ))}
         </ul>
