@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+type WidgetKey = "github" | "weather" | "bookmarks" | "notes" | "timer";
+
 interface Bookmark {
   id: string;
   label: string;
@@ -20,6 +22,9 @@ interface DashboardStore {
   startTimer: () => void;
   pauseTimer: () => void;
   resetTimer: () => void;
+
+  widgetOrder: WidgetKey[];
+  setWidgetOrder: (order: WidgetKey[]) => void;
 }
 
 export const useDashboardStore = create<DashboardStore>()(
@@ -39,8 +44,10 @@ export const useDashboardStore = create<DashboardStore>()(
       secondsLeft: 25 * 60,
       startTimer: () => set({ timerRunning: true }),
       pauseTimer: () => set({ timerRunning: false }),
-      resetTimer: () =>
-        set({ secondsLeft: 25 * 60, timerRunning: false }),
+      resetTimer: () => set({ secondsLeft: 25 * 60, timerRunning: false }),
+
+      widgetOrder: ["github", "weather", "bookmarks", "notes", "timer"],
+      setWidgetOrder: (order) => set({ widgetOrder: order }),
     }),
     {
       name: "devbrew-dashboard",
