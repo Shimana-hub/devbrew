@@ -14,6 +14,12 @@ interface DashboardStore {
 
   notes: string;
   setNotes: (value: string) => void;
+
+  timerRunning: boolean;
+  secondsLeft: number;
+  startTimer: () => void;
+  pauseTimer: () => void;
+  resetTimer: () => void;
 }
 
 export const useDashboardStore = create<DashboardStore>()(
@@ -28,6 +34,13 @@ export const useDashboardStore = create<DashboardStore>()(
         }),
       notes: "",
       setNotes: (value) => set({ notes: value }),
+
+      timerRunning: false,
+      secondsLeft: 25 * 60,
+      startTimer: () => set({ timerRunning: true }),
+      pauseTimer: () => set({ timerRunning: false }),
+      resetTimer: () =>
+        set({ secondsLeft: 25 * 60, timerRunning: false }),
     }),
     {
       name: "devbrew-dashboard",

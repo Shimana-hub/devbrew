@@ -3,6 +3,7 @@ import { GitHubFeed } from "@/components/widgets/GitHubFeed";
 import { WeatherWidget } from "@/components/widgets/WeatherWidget";
 import { Bookmarks } from "@/components/widgets/Bookmarks";
 import { Notes } from "@/components/widgets/Notes";
+import { PomodoroTimer } from "@/components/widgets/PomodoroTimer";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
             <WeatherWidget city="Lagos" />
             <Bookmarks />
             <Notes />
+            <PomodoroTimer />
 
           </div>
         </div>
