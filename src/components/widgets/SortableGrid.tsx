@@ -37,9 +37,43 @@ function SortableItem({ id }: { id: string }) {
     transition,
   };
 
+  const Widget = widgetMap[id as keyof typeof widgetMap];
+
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      {widgetMap[id as keyof typeof widgetMap]}
+    <div ref={setNodeRef} style={style} {...attributes}>
+      
+      <div style={{ position: "relative" }}>
+        
+        <div
+          {...listeners}
+          tabIndex={0}
+          aria-label="Drag handle"
+          style={{
+            position: "absolute",
+            top: 8,
+            right: 8,
+            zIndex: 10,
+            cursor: "grab",
+            width: 26,
+            height: 26,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 6,
+            background: "rgba(243,244,246,0.8)", 
+            boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+            transition: "background 0.2s",
+          }}
+        >
+          <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+            <circle cx="7" cy="7" r="1.5" fill="currentColor" />
+            <circle cx="13" cy="7" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="13" r="1.5" fill="currentColor" />
+            <circle cx="13" cy="13" r="1.5" fill="currentColor" />
+          </svg>
+        </div>
+        {Widget}
+      </div>
     </div>
   );
 }

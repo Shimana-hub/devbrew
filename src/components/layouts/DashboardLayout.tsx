@@ -1,7 +1,9 @@
 "use client";
 
+import { supabase } from "@/lib/supabase";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function DashboardLayout({
   children,
@@ -28,12 +30,15 @@ export default function DashboardLayout({
         {/* Topbar */}
         <header className="flex justify-between items-center border-b px-6 py-4">
           <h1 className="text-2xl font-semibold">Dashboard</h1>
-          <Link
+            {/*
+            <Link
             href="/auth"
             className="hover:underline text-sm text-muted-foreground"
-          >
+            >
             Login
-          </Link>
+            </Link>
+            */}
+          <Button onClick={() => supabase.auth.signOut()}>Logout</Button>
 
           <ThemeToggle />
         </header>

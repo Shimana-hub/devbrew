@@ -15,9 +15,13 @@ export default function AuthPage() {
 
   const handleSubmit = async () => {
     setError("");
-    const fn = mode === "signin" ? supabase.auth.signInWithPassword : supabase.auth.signUp;
-    const { error } = await fn({ email, password });
-    if (error) return setError(error.message);
+    let result;
+    if (mode === "signin") {
+      result = await supabase.auth.signInWithPassword({ email, password });
+    } else {
+      result = await supabase.auth.signUp({ email, password });
+    }
+    if (result.error) return setError(result.error.message);
     router.push("/");
   };
 
@@ -47,7 +51,9 @@ export default function AuthPage() {
         {error && <p className="text-destructive text-sm">{error}</p>}
 
         <p className="text-sm text-center">
-          {mode === "signin" ? "Don't have an account?" : "Already have an account?"}
+          {mode === "signin"
+            ? "Don't have an account?"
+            : "Already have an account?"}
           <button
             onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
             className="ml-2 underline text-blue-600"
