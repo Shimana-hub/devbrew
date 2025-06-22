@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDashboardStore } from "@/lib/store";
 import { WidgetContainer } from "./WidgetContainer";
 import { Input } from "@/components/ui/input";

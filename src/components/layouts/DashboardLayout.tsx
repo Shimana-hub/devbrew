@@ -14,8 +14,12 @@ export default function DashboardLayout({
       <aside className="w-64 bg-muted p-4 border-r">
         <h2 className="text-xl font-bold mb-6">☕ DevBrew</h2>
         <nav className="flex flex-col gap-4">
-          <Link href="/" className="hover:underline">Dashboard</Link>
-          <Link href="/settings" className="hover:underline">Settings</Link>
+          <Link href="/" className="hover:underline">
+            Dashboard
+          </Link>
+          <Link href="/settings" className="hover:underline">
+            Settings
+          </Link>
         </nav>
       </aside>
 
@@ -24,6 +28,13 @@ export default function DashboardLayout({
         {/* Topbar */}
         <header className="flex justify-between items-center border-b px-6 py-4">
           <h1 className="text-2xl font-semibold">Dashboard</h1>
+          <Link
+            href="/auth"
+            className="hover:underline text-sm text-muted-foreground"
+          >
+            Login
+          </Link>
+
           <ThemeToggle />
         </header>
 
