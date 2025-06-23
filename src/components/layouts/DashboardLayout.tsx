@@ -8,15 +8,14 @@ import { Button } from "@/components/ui/button";
 import { useDashboardStore } from "@/lib/store";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-const { session } = useAuth();
-const email = session?.user.email;
-
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const { loading } = useDashboardStore();
+  const { session } = useAuth();
+  const email = session?.user.email;
 
   return (
     <div className="flex h-screen w-full">
@@ -36,16 +35,18 @@ export default function DashboardLayout({
       {/* Main Area */}
       <div className="flex-1 flex flex-col">
         {/* Topbar */}
-        <header className="flex justify-between items-center border-b px-6 py-4 gap-4 flex-wrap">
+        <header className="flex justify-between items-center border-b px-6 py-4 gap-4">
           <h1 className="text-2xl font-semibold flex-shrink-0">Dashboard</h1>
-          <div className="flex items-center gap-3 flex-shrink-0 ml-auto">
-            <div className="flex items-center gap-2">
-              <p className="text-sm">Welcome, {email?.split("@")[0]}</p>
-              <Avatar>
-                <AvatarFallback>
-                  {email?.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
+          <div className="flex items-center gap-8 flex-shrink-0 ml-auto">
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <p className="text-sm">Welcome, {email?.split("@")[0]}</p>
+                <Avatar>
+                  <AvatarFallback>
+                    {email?.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
             </div>
 
             {/* <Link
