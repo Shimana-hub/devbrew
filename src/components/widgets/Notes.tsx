@@ -1,38 +1,38 @@
 "use client";
 
+import Link from "next/link";
+import { useAuth } from "@/lib/AuthProvider";
+import { useEffect } from "react";
 import { useDashboardStore } from "@/lib/store";
 import { WidgetContainer } from "./WidgetContainer";
-import { Textarea } from "@/components/ui/textarea";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 
 export function Notes() {
-  const { notes, setNotes } = useDashboardStore();
+  const { session } = useAuth();
+  const userId = session?.user.id;
+  const { notes, fetchNotes } = useDashboardStore();
+
+  useEffect(() => {
+    if (userId) fetchNotes(userId);
+  }, [userId]);
 
   return (
     <WidgetContainer title="Notes">
-      <Tabs defaultValue="edit" className="w-full">
-        <TabsList className="mb-4">
-          <TabsTrigger value="edit">Edit</TabsTrigger>
-          <TabsTrigger value="preview">Preview</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="edit">
-          <Textarea
-            className="min-h-[150px]"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="Write your markdown notes here..."
-          />
-        </TabsContent>
-
-        <TabsContent value="preview">
-          <div className="prose prose-sm dark:prose-invert max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{notes}</ReactMarkdown>
+      <div className="space-y-2 max-h-[200px] overflow-y-auto">
+        {notes.slice(0, 3).map((note) => (
+          <div key={note.id}>
+            <p className="font-medium truncate">{note.title}</p>
+            <p className="text-sm text-muted-foreground truncate">
+              {note.content.slice(0, 80)}
+            </p>
           </div>
-        </TabsContent>
-      </Tabs>
+        ))}
+      </div>
+      <div className="mt-3 text-right">
+        <Link href="/notes">
+          <Button variant="secondary" size="sm">View All</Button>
+        </Link>
+      </div>
     </WidgetContainer>
   );
 }
