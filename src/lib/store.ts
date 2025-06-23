@@ -41,6 +41,9 @@ interface DashboardStore {
   createNote: (userId: string, title: string) => Promise<Note | null>;
   updateNote: (note: Note, userId: string) => Promise<void>;
   deleteNote: (id: string, userId: string) => Promise<void>;
+
+  loading: boolean;
+  setLoading: (value: boolean) => void;
 }
 
 export const useDashboardStore = create<DashboardStore>()(
@@ -64,12 +67,14 @@ export const useDashboardStore = create<DashboardStore>()(
       setWidgetOrder: (order) => set({ widgetOrder: order }),
 
       fetchBookmarks: async (userId: string) => {
+        set({ loading: true });
         const { data } = await supabase
           .from("bookmarks")
           .select("*")
           .eq("user_id", userId)
           .order("created_at", { ascending: true });
         set({ bookmarks: data || [] });
+        set({ loading: false });
       },
 
       saveBookmark: async (bookmark: Bookmark, userId: string) => {
@@ -94,12 +99,14 @@ export const useDashboardStore = create<DashboardStore>()(
       setNotes: (value: Note[]) => set({ notes: value }),
 
       fetchNotes: async (userId: string) => {
+        set({ loading: true });
         const { data } = await supabase
           .from("notes")
           .select("*")
           .eq("user_id", userId)
           .order("updated_at", { ascending: false });
         if (data) set({ notes: data });
+        set({ loading: false });
       },
 
       createNote: async (userId: string, title: string) => {
@@ -138,6 +145,9 @@ export const useDashboardStore = create<DashboardStore>()(
           notes: state.notes.filter((n) => n.id !== id),
         }));
       },
+
+      loading: false,
+      setLoading: (value: boolean) => set({ loading: value }),
     }),
     {
       name: "devbrew-dashboard",
